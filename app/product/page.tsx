@@ -11,7 +11,7 @@ import Link from "next/link";
 
 const ProductPage = () => {
   return (
-    <div className="bg-slate-50 min-h-screen text-black">
+    <div className="bg-slate-50 min-h-screen w-full text-black">
         <div className="w-full mx-auto py-10">
           <div className="flex justify-center gap-x-10">
             <h1 className="text-2xl font-bold">Data Warga</h1>

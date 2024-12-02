@@ -2,10 +2,9 @@ import FormLogin from '@/components/auth/form-login'
 
 const Login = () => {
   return (
-    <div className='p-6 space-y-4'>
-      <h1 className='text-2xl font-bold text-gray-900'>SignIn Account</h1>
+    // <div className='p-6 space-y-4'>
       <FormLogin />
-    </div>
+    // </div>
   )
 }
 

@@ -2,6 +2,7 @@
 import React from 'react';
 import styles from './addWarga.module.css';
 import { addWarga } from '@/lib/actions';
+import { FcCalendar } from 'react-icons/fc';
 
 const AddProductPage: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,8 +54,8 @@ const AddProductPage: React.FC = () => {
           <option value="Strata III">Strata III</option>
         </select>
         <input type="text" placeholder='Pekerjaan' name='pekerjaan' />
-        <input type="date" placeholder='Tanggal Lahir' name='tanggalLahir' required />
-        <input type="number" placeholder='RT ID' name='rtId' required />
+        <input type="date" placeholder='Tanggal Lahir' name='tanggalLahir' required /> 
+        <input type="number" placeholder='RT ID (1 - 11)' name='rtId' required />
         <button type='submit' className={styles.button}>Submit</button>
       </form>
     </div>

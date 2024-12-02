@@ -14,26 +14,21 @@ import {
   import { getWargaByRT } from "@/lib/data"; // Adjust the import according to your file structure
   import { TrashOutline, OpenOutline } from 'react-ionicons'
   import { deleteWarga } from "@/lib/actions";
-  import { useRouter } from "next/navigation";
   import { calculateAge } from "@/lib/utils";
   
   const TanStackTable = () => {
     const columnHelper = createColumnHelper();
-    const router = useRouter();
 
     const handleDelete = async (userId: string) => {
         // Menampilkan dialog konfirmasi
         const confirmed = window.confirm("Apakah Anda yakin ingin menghapus pengguna ini?");
         if (confirmed) {
             const success = await deleteWarga(userId);
-            if (success) {
-                return router.refresh(); // Menggunakan reload untuk menyegarkan halaman
-            } else {
-                alert('Failed to delete user.');
-            }
+            alert("Data berhasil dihapus");
+            window.location.reload();
         } else {
             // Jika pengguna membatalkan, tidak ada tindakan yang diambil
-            console.log('Penghapusan dibatalkan.');
+            alert('Penghapusan dibatalkan.');
         }
     };
 
@@ -116,7 +111,7 @@ import {
       getPaginationRowModel: getPaginationRowModel(),
     });
     return (
-      <div className="p-2 max-w-5xl mx-auto text-white fill-gray-400">
+      <div className="p-2 max-w-full mx-auto text-white fill-gray-400">
         <div className="flex justify-between mb-2">
           <div className="w-full flex items-center gap-1">
             <SearchIcon />
@@ -126,7 +121,7 @@ import {
                 setGlobalFilter(String(value));
                 setSearchQuery(String(value)); // Update searchQuery for fetching
               }}
-              className="p-2 bg-transparent outline-none border-b-2 w-1/5 focus:w-1/3 duration-300 border-indigo-500"
+              className="p-2 bg-transparent outline-none text-black border-b-2 w-1/5 focus:w-1/3 duration-300 border-indigo-500"
               placeholder="Search all columns..."
             />
           </div>
