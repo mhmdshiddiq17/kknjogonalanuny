@@ -13,8 +13,6 @@ const DebouncedInput = ({
   value: initValue,
   onChange,
   debounce = 500,
-  className,
-  placeholder,
   ...props
 }: debounce) => {
   const [value, setValue] = useState(initValue);
@@ -28,7 +26,7 @@ const DebouncedInput = ({
       onChange(value);
     }, debounce);
     return () => clearTimeout(timeout);
-  }, [value]);
+  }, [value, onChange, debounce]);
 
   return (
     <input

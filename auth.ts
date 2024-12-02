@@ -6,6 +6,7 @@ import { SignInSchema } from "./lib/zod"
 import { compareSync } from "bcrypt-ts"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  // @ts-ignore
   adapter: PrismaAdapter(prisma),
   session: {strategy:"jwt"},
   pages: {
@@ -17,6 +18,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
+
+      // @ts-ignore
       authorize: async(credentials) => {
         const validatedField = SignInSchema.safeParse(credentials);
         if(!validatedField.success){
