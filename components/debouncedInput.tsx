@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 
+
+interface debounce {
+  value: string;
+  onChange: (value: string) => void;
+  debounce?: number;
+  className?: string;
+  placeholder?: string;
+}
+
 const DebouncedInput = ({
   value: initValue,
   onChange,
   debounce = 500,
+  className,
+  placeholder,
   ...props
-}: any) => {
+}: debounce) => {
   const [value, setValue] = useState(initValue);
   useEffect(() => {
     setValue(initValue);

@@ -6,6 +6,7 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     useReactTable,
+    ColumnDef
   } from "@tanstack/react-table";
   import { useState, useEffect } from "react";
   import DownloadBtn from "./downloadBtn";
@@ -15,7 +16,20 @@ import {
   import { TrashOutline, OpenOutline } from 'react-ionicons'
   import { deleteWarga } from "@/lib/actions";
   import { calculateAge } from "@/lib/utils";
-  
+
+  interface User {
+    id: string;
+    namaLengkap: string;
+    jenisKelamin: string;
+    pekerjaan: string;
+    agama: string;
+    pendidikan: string;
+    tanggalLahir: string; // atau Date jika sudah dalam format tanggal
+    rt: {
+        nomor: string;
+    };
+}
+
   const TanStackTable = () => {
     const columnHelper = createColumnHelper();
 
@@ -23,7 +37,7 @@ import {
         // Menampilkan dialog konfirmasi
         const confirmed = window.confirm("Apakah Anda yakin ingin menghapus pengguna ini?");
         if (confirmed) {
-            const success = await deleteWarga(userId);
+            await deleteWarga(userId);
             alert("Data berhasil dihapus");
             window.location.reload();
         } else {
@@ -84,8 +98,8 @@ import {
   
     const [data, setData] = useState<any>([]);
     const [globalFilter, setGlobalFilter] = useState("");
-    const [page, setPage] = useState(1); // For pagination
-    const [searchQuery, setSearchQuery] = useState(""); // For search query
+    // const [page, setPage] = useState(1); // For pagination
+    // const [searchQuery, setSearchQuery] = useState(""); // For search query
     
 
     useEffect(() => {
@@ -117,10 +131,7 @@ import {
             <SearchIcon />
             <DebouncedInput
               value={globalFilter ?? ""}
-              onChange={(value: any) => {
-                setGlobalFilter(String(value));
-                setSearchQuery(String(value)); // Update searchQuery for fetching
-              }}
+              onChange={(value: any) =>setGlobalFilter(String(value))}
               className="p-2 bg-transparent outline-none text-black border-b-2 w-1/5 focus:w-1/3 duration-300 border-indigo-500"
               placeholder="Search all columns..."
             />
@@ -170,7 +181,6 @@ import {
           <button
             onClick={() => {
               table.previousPage();
-              setPage((prev) => Math.max(prev - 1, 1)); // Decrement page
             }}
             disabled={!table.getCanPreviousPage()}
             className="p-1 border border-gray-300 px-2 disabled:opacity-30"
@@ -180,7 +190,6 @@ import {
           <button
             onClick={() => {
               table.nextPage();
-              setPage((prev) => prev + 1); // Increment page
             }}
             disabled={!table.getCanNextPage()}
             className="p-1 border border-gray-300 px-2 disabled:opacity-30"
@@ -203,7 +212,6 @@ import {
               onChange={(e) => {
                 const page = e.target.value ? Number(e.target.value) - 1 : 0;
                 table.setPageIndex(page);
-                setPage(page + 1); // Update page state
               }}
               className="border p-1 rounded w-16 bg-transparent"
             />

@@ -2,7 +2,6 @@
 import React from 'react';
 import styles from './addWarga.module.css';
 import { addWarga } from '@/lib/actions';
-import { FcCalendar } from 'react-icons/fc';
 
 const AddProductPage: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

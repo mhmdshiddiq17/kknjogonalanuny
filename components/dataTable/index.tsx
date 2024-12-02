@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useMemo } from "react";
 import * as XLSX from "xlsx";
-import { ColumnData, sortType } from "@/types/index";
+import { sortType } from "@/types/index";
 import {
 	CaretDownOutline,
 	CaretUpOutline,

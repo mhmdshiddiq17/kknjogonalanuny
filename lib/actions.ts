@@ -5,7 +5,6 @@ import { hashSync } from "bcrypt-ts";
 import {redirect} from "next/navigation"
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
-import { revalidatePath } from "next/cache";
 
 export const SignUpCredentials = async ( prevState: unknown,formData: FormData) => {
     const  validatedField = RegisterSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -28,7 +27,7 @@ export const SignUpCredentials = async ( prevState: unknown,formData: FormData) 
             }
         })
     }catch(e){
-        return {message: "Failed to register user"}
+        return {message: "Failed to register user" + e}
     }
 
     redirect('/login');
@@ -80,6 +79,7 @@ export const addWarga = async (prevState: unknown, formData: FormData) => {
                 tanggalLahir: new Date(tanggalLahir as string), // Ensure the date is in the correct format
             },
         });
+        return newWarga;
 
     } catch (error) {
         console.error("Error adding warga:", error);

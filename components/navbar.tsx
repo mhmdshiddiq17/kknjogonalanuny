@@ -3,7 +3,6 @@ import Link from "next/link"
 import Image from 'next/image'
 import { auth, signOut } from "@/auth"
 // import { useState } from "react"
-import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 
 const Navbar = async() => {
     const session = await auth()
