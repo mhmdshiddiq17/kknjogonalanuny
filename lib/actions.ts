@@ -66,6 +66,7 @@ export const addWarga = async (prevState: unknown, formData: FormData) => {
 
 
     try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const newWarga = await prisma.warga.create({
             data: {
                 nik: nik ? nik.toString() : undefined,
@@ -79,7 +80,7 @@ export const addWarga = async (prevState: unknown, formData: FormData) => {
                 tanggalLahir: new Date(tanggalLahir as string), // Ensure the date is in the correct format
             },
         });
-        return newWarga;
+        
 
     } catch (error) {
         console.error("Error adding warga:", error);
