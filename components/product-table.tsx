@@ -6,7 +6,6 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     useReactTable,
-    ColumnDef
   } from "@tanstack/react-table";
   import { useState, useEffect } from "react";
   import DownloadBtn from "./downloadBtn";
@@ -17,18 +16,18 @@ import {
   import { deleteWarga } from "@/lib/actions";
   import { calculateAge } from "@/lib/utils";
 
-  interface User {
-    id: string;
-    namaLengkap: string;
-    jenisKelamin: string;
-    pekerjaan: string;
-    agama: string;
-    pendidikan: string;
-    tanggalLahir: string; // atau Date jika sudah dalam format tanggal
-    rt: {
-        nomor: string;
-    };
-}
+//   interface User {
+//     id: string;
+//     namaLengkap: string;
+//     jenisKelamin: string;
+//     pekerjaan: string;
+//     agama: string;
+//     pendidikan: string;
+//     tanggalLahir: string; // atau Date jika sudah dalam format tanggal
+//     rt: {
+//         nomor: string;
+//     };
+// }
 
   const TanStackTable = () => {
     const columnHelper = createColumnHelper();
@@ -45,7 +44,8 @@ import {
             alert('Penghapusan dibatalkan.');
         }
     };
-
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const columns: any = [
       columnHelper.accessor("", {
         id: "S.No",
@@ -95,7 +95,9 @@ import {
         ),
       })
     ];
-  
+    
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [data, setData] = useState<any>([]);
     const [globalFilter, setGlobalFilter] = useState("");
     // const [page, setPage] = useState(1); // For pagination
@@ -131,6 +133,7 @@ import {
             <SearchIcon />
             <DebouncedInput
               value={globalFilter ?? ""}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onChange={(value: any) =>setGlobalFilter(String(value))}
               className="p-2 bg-transparent outline-none text-black border-b-2 w-1/5 focus:w-1/3 duration-300 border-indigo-500"
               placeholder="Search all columns..."

@@ -13,6 +13,7 @@ import {
 } from "react-ionicons";
 
 interface DataTableProps {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	data: any;
 	searchBar?: boolean;
 	excelExport?: boolean;
