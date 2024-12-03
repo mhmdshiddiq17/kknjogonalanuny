@@ -95,7 +95,6 @@ export const deleteWarga = async(userId: string) => {
                 id: userId, // Ganti 'id' dengan field yang sesuai jika perlu
             },
         });
-        console.log('User deleted:', deletedUser);
     } catch (error) {
         console.error('Error deleting user:', error);
     }

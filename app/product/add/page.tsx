@@ -12,7 +12,7 @@ const AddProductPage: React.FC = () => {
 
     try {
       const newWarga = await addWarga(undefined, formData); // Call the addWarga function
-      console.log(newWarga); // Log the newly added warga
+      alert("Data warga berhasil ditambahkan") // Log the newly added warga
     } catch (error) {
       console.error("Error adding warga:", error);
     }
@@ -54,7 +54,7 @@ const AddProductPage: React.FC = () => {
         </select>
         <input type="text" placeholder='Pekerjaan' name='pekerjaan' />
         <input type="date" placeholder='Tanggal Lahir' name='tanggalLahir' required /> 
-        <input type="number" placeholder='RT ID (1 - 11)' name='rtId' required />
+        <input type="number" placeholder='RT ID (1 - 11)' name='rtId' required min={1} max={11} />
         <button type='submit' className={styles.button}>Submit</button>
       </form>
     </div>
