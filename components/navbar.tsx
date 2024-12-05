@@ -11,7 +11,7 @@ const Navbar = async() => {
     // const handleNav = () => {
     //   setNav(!nav);
     // };
-
+    // console.log(JSON.stringify(session))
   return (
     <nav className="border-b border-gray-200 w-full">
         <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">

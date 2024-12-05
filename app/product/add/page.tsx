@@ -54,7 +54,7 @@ const AddProductPage: React.FC = () => {
         </select>
         <input type="text" placeholder='Pekerjaan' name='pekerjaan' />
         <input type="date" placeholder='Tanggal Lahir' name='tanggalLahir' required /> 
-        <input type="number" placeholder='RT ID (1 - 11)' name='rtId' required min={1} max={11} />
+        <input type="number" placeholder='RT ID (1 - 11)' onChange={(e) => { if (e.target.value.length > 2) e.target.value = e.target.value.slice(0, 2) }} name='rtId' required min={1} max={11} />
         <button type='submit' className={styles.button}>Submit</button>
       </form>
     </div>

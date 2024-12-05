@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import {
   FaDribbbleSquare,
@@ -14,8 +15,8 @@ const Footer = () => {
         <h1 className='w-full text-3xl font-bold text-[#00df9a]'>HONEY.KISSMOW.</h1>
         <p className='py-4'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id odit ullam iste repellat consequatur libero reiciendis, blanditiis accusantium.</p>
         <div className='flex justify-between md:w-[75%] my-6'>
-            <FaFacebookSquare size={30} />
-            <FaInstagram size={30} />
+            <Link href={"/"}><FaFacebookSquare size={30} /></Link>
+            <Link href={"https://www.instagram.com/honey.kissmow"}><FaInstagram size={30} /></Link>
             <FaTwitterSquare size={30} />
             <FaGithubSquare size={30} />
             <FaDribbbleSquare size={30} />

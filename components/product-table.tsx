@@ -13,37 +13,87 @@ import {
   import { SearchIcon } from "@/public/Icons/Icons";
   import { getWargaByRT } from "@/lib/data"; // Adjust the import according to your file structure
   import { TrashOutline, OpenOutline } from 'react-ionicons'
-  import { deleteWarga } from "@/lib/actions";
+  import { createBulkUsers, deleteWarga, deleteWargaAll, WargaProps } from "@/lib/actions";
   import { calculateAge } from "@/lib/utils";
+  import * as XLSX from "xlsx";
+// import Example from "./borderless_side_by_side";
 
-//   interface User {
-//     id: string;
-//     namaLengkap: string;
-//     jenisKelamin: string;
-//     pekerjaan: string;
-//     agama: string;
-//     pendidikan: string;
-//     tanggalLahir: string; // atau Date jika sudah dalam format tanggal
-//     rt: {
-//         nomor: string;
-//     };
-// }
+
 
   const TanStackTable = () => {
     const columnHelper = createColumnHelper();
+    const [file, setFile] = useState<File | null>(null);
+    // const [jsonData, setJsonData] = useState("");
+    console.log(file);
+    function saveData() {
+      if (file) {
+        // setLoading(true);
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const data = e.target?.result;
+          if (data) {
+            const workbook = XLSX.read(data, { type: "binary" });
+            // SheetName
+            const sheetName = workbook.SheetNames[0];
+            // Worksheet
+            const workSheet = workbook.Sheets[sheetName];
+            // Json
+            const json: any[] = XLSX.utils.sheet_to_json(workSheet);
+            //Save to the DB
+            const plainObject = JSON.parse(JSON.stringify(json));
+            try {
+              await createBulkUsers(plainObject);
+              alert("data berhasil disimpan")
+              window.location.reload();
+              // setLoading(false);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        };
+        reader.readAsBinaryString(file);
+      }
+    }
+    function previewData() {
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = e.target?.result;
+          if (data) {
+            const workbook = XLSX.read(data, { type: "binary" });
+            // SheetName
+            const sheetName = workbook.SheetNames[0];
+            // Worksheet
+            const workSheet = workbook.Sheets[sheetName];
+            // Json
+            const json = XLSX.utils.sheet_to_json(workSheet);
+            // setJsonData(JSON.stringify(json, null, 2));
+          }
+        };
+        reader.readAsBinaryString(file);
+      }
+    }
+  
 
     const handleDelete = async (userId: string) => {
         // Menampilkan dialog konfirmasi
         const confirmed = window.confirm("Apakah Anda yakin ingin menghapus pengguna ini?");
         if (confirmed) {
             await deleteWarga(userId);
-            alert("Data berhasil dihapus");
             window.location.reload();
         } else {
-            // Jika pengguna membatalkan, tidak ada tindakan yang diambil
             alert('Penghapusan dibatalkan.');
         }
     };
+    async function clearData() {
+      const confirmed = window.confirm("Apakah Anda yakin ingin menghapus semua warga");
+      if(confirmed){
+        await deleteWargaAll();
+        window.location.reload();
+      }else{
+        alert("penghapusan dibatalkan");
+      }
+    }
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const columns: any = [
@@ -128,6 +178,42 @@ import {
     });
     return (
       <div className="p-2 max-w-full mx-auto text-white fill-gray-400">
+              {/* upload input, preview btn , save btn , clear Data */}
+      <div className="flex items-center gap-8">
+        <div className="">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="file_input"
+          >
+            Upload file
+          </label>
+          <input
+            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            id="file_input"
+            type="file"
+            accept=".xls,.xlsx"
+            onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+          />
+        </div>
+        <button
+          onClick={previewData}
+          className="py-2 px-6 rounded bg-slate-300 text-slate-900 "
+        >
+          Preview Data
+        </button>
+        <button
+          onClick={saveData}
+          className="py-2 px-6 rounded bg-purple-600 text-slate-100 "
+        >
+          Save Data
+        </button>
+        <button
+          onClick={clearData}
+          className="py-2 px-6 rounded bg-red-600 text-slate-100 "
+        >
+          Clear Data
+        </button>
+      </div>
         <div className="flex justify-between mb-2">
           <div className="w-full flex items-center gap-1">
             <SearchIcon />
@@ -174,7 +260,7 @@ import {
               ))
             ) : (
               <tr className="text-center h-32 bg-gray-800">
-                <td colSpan={9}>Loading ....</td>
+                <td colSpan={9}>Tidak ada data ....</td>
               </tr>
             )}
           </tbody>
@@ -233,6 +319,7 @@ import {
             ))}
           </select>
         </div>
+        {/* <Example /> */}
       </div>
     );
   };

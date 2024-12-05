@@ -24,3 +24,12 @@ export const calculateAge = (birthDate: string) => {
   }
   return age
 }
+
+// utils.js
+
+// utils.js
+
+export const isValidInput = (value: any) => {
+  const regex = /^([1]|[1])$/; // Validasi untuk angka 1-11
+  return regex.test(value); // Memastikan panjang input maksimal 2 karakter
+};

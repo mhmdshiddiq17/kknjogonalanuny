@@ -5,6 +5,18 @@ import { hashSync } from "bcrypt-ts";
 import {redirect} from "next/navigation"
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import { revalidatePath } from "next/cache";
+
+
+  export interface WargaProps {
+    namaLengkap: string;
+    jenisKelamin: string;
+    pekerjaan: string;
+    agama: string;
+    pendidikan: string;
+    tanggalLahir: string; // atau Date jika sudah dalam format tanggal
+    rtId: any;
+}
 
 export const SignUpCredentials = async ( prevState: unknown,formData: FormData) => {
     const  validatedField = RegisterSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -79,7 +91,7 @@ export const addWarga = async (prevState: unknown, formData: FormData) => {
                 tanggalLahir: new Date(tanggalLahir as string), // Ensure the date is in the correct format
             },
         });
-        return newWarga;
+        // return newWarga;
 
     } catch (error) {
         console.error("Error adding warga:", error);
@@ -100,3 +112,49 @@ export const deleteWarga = async(userId: string) => {
     }
     redirect("/product");
 }
+
+export async function getUsers() {
+    try {
+      const users = await prisma.user.findMany();
+      return users;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  export async function createWargaByExcel(data: any) {
+    try {
+      const user = await prisma.warga.create({
+        data: {
+          namaLengkap: data.namaLengkap,
+          jenisKelamin: data.jenisKelamin,
+          pekerjaan: data.pekerjaan,
+          agama: data.agama,
+          pendidikan: data.pendidikan,
+          tanggalLahir: new Date(data.tanggalLahir),
+          rtId: Number(data.rtId),
+        },
+      });
+      revalidatePath("/");
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+export async function createBulkUsers(users: any[]) {
+    try {
+      for (const user of users) {
+        await createWargaByExcel(user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  export async function deleteWargaAll() {
+    try {
+      await prisma.warga.deleteMany();
+      revalidatePath("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
