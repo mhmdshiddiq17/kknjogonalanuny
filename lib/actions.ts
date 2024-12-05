@@ -1,12 +1,11 @@
 "use server"
 import { prisma } from "./prisma";
 import { RegisterSchema, SignInSchema } from "./zod"
-import { hashSync } from "bcrypt-ts";
 import {redirect} from "next/navigation"
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
-
+import {hashSync} from "bcrypt-ts"
 
   export interface WargaProps {
     namaLengkap: string;
@@ -28,7 +27,7 @@ export const SignUpCredentials = async ( prevState: unknown,formData: FormData) 
     }
 
     const {name, email, password} = validatedField.data;
-    const hashedPassword = hashSync(password, 10);
+    const hashedPassword = await hashSync(password, 10);
 
     try{
         await prisma.user.create({
