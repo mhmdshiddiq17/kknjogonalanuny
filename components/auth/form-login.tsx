@@ -9,6 +9,7 @@ import { Input } from '../ui/input';
 import Image from 'next/image';
 import { LoginButton } from '../button';
 
+
 const FormLogin = () => {
     const [state, formAction] = useFormState(signInCredentials, null);
 
@@ -40,7 +41,7 @@ const FormLogin = () => {
                         <div aria-live='polite' aria-atomic="true">
                             <span className='text-sm text-red-500 mt-2'>{state?.error?.password}</span>
                         </div>
-                    <LoginButton />
+                    <LoginButton/>
                 </form>
                 <p className='mt-4 text-xs text-slate-200'>@2024 KKN HONEY KISMO UNY</p>
             </div>

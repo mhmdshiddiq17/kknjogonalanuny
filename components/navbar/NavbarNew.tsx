@@ -171,7 +171,7 @@ export default function NavbarNew() {
           </DisclosureButton>
           <DisclosureButton
             as="a"
-            href="#"
+            href="/dashboard/product"
             className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
           >
             Team

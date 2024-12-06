@@ -2,6 +2,7 @@
 
 import { useFormStatus } from "react-dom"
 import { Button } from "./ui/button";
+import toast from "react-hot-toast";
 
 export const RegisterButton = () => {
     const {pending} = useFormStatus();
@@ -11,12 +12,14 @@ export const RegisterButton = () => {
 }
 export const LoginButton = () => {
     const { pending } = useFormStatus();
-    
+
+
     return (
         <Button 
             type='submit' 
             className='w-full mt-6 rounded-full bg-indigo-500 hover:bg-indigo-700'
             disabled={pending}
+            onClick={() => {toast.success("Login Success")}}
         >
             {pending ? (
                 <>

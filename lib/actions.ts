@@ -96,7 +96,7 @@ export const addWarga = async (prevState: unknown, formData: FormData) => {
         console.error("Error adding warga:", error);
         throw new Error("Could not add warga data.");
     }
-    redirect('/product');
+    redirect('/dashboard/product');
 };
 
 export const deleteWarga = async(userId: string) => {
@@ -109,7 +109,7 @@ export const deleteWarga = async(userId: string) => {
     } catch (error) {
         console.error('Error deleting user:', error);
     }
-    redirect("/product");
+    redirect("/dashboard/product");
 }
 
 export async function getUsers() {

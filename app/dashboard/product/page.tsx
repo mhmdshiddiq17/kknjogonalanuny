@@ -15,7 +15,7 @@ const ProductPage = () => {
         <div className="w-full mx-auto py-10">
           <div className="flex justify-center gap-x-10">
             <h1 className="text-2xl font-bold">Data Warga</h1>
-            <Link href="/product/add" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <Link href="/dashboard/product/add" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Tambah Data
             </Link>
           </div>

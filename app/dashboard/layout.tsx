@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -12,14 +12,18 @@ import {
   UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import toast,{ Toaster } from 'react-hot-toast'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon},
+  { name: 'Warga', href: '/dashboard/product', icon: UsersIcon},
+  { name: 'Users', href: '/dashboard/user', icon: FolderIcon},
+  { name: 'Calendar', href: '#', icon: CalendarIcon},
+  { name: 'Documents', href: '#', icon: DocumentDuplicateIcon},
+  { name: 'Reports', href: '#', icon: ChartPieIcon},
 ]
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
@@ -27,23 +31,40 @@ const teams = [
   { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
 
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function SideBarLayout({children}: {children: React.ReactNode}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const pathname = usePathname();
 
+
+
+  const [session, setSession] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const updatedNavigation = navigation.map(item => ({
+    ...item,
+    current: item.href === pathname,
+  }));
+  useEffect(() => {
+    const fetchSession = async () => {
+      const response = await fetch('/api/auth/session');
+      const data = await response.json();
+      
+      if (response) {
+        setSession(data);
+      } else {
+        console.log(data);
+      }
+      setLoading(false);
+    };
+
+    fetchSession();
+  }, []);
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Dialog open={sidebarOpen} onClose={setSidebarOpen} className="relative z-50 lg:hidden">
           <DialogBackdrop
@@ -77,9 +98,9 @@ export default function SideBarLayout({children}: {children: React.ReactNode}) {
                   <ul role="list" className="flex flex-1 flex-col gap-y-7">
                     <li>
                       <ul role="list" className="-mx-2 space-y-1">
-                        {navigation.map((item) => (
+                        {updatedNavigation.map((item) => (
                           <li key={item.name}>
-                            <a
+                            <Link
                               href={item.href}
                               className={classNames(
                                 item.current
@@ -96,7 +117,7 @@ export default function SideBarLayout({children}: {children: React.ReactNode}) {
                                 )}
                               />
                               {item.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -146,7 +167,7 @@ export default function SideBarLayout({children}: {children: React.ReactNode}) {
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
+                    {updatedNavigation.map((item) => (
                       <li key={item.name}>
                         <a
                           href={item.href}
@@ -204,7 +225,7 @@ export default function SideBarLayout({children}: {children: React.ReactNode}) {
                       className="h-8 w-8 rounded-full bg-indigo-700"
                     />
                     <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Tom Cook</span>
+                    <span aria-hidden="true">{session.user?.name}</span>
                   </a>
                 </li>
               </ul>
@@ -229,7 +250,12 @@ export default function SideBarLayout({children}: {children: React.ReactNode}) {
         </div>
 
         <main className="py-10 lg:pl-72">
-          <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div>
+              <Toaster position='top-right'/>
+            </div>
+            {children}
+          </div>
         </main>
       </div>
     </>

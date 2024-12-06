@@ -16,6 +16,8 @@ import {
   import { createBulkUsers, deleteWarga, deleteWargaAll, WargaProps } from "@/lib/actions";
   import { calculateAge } from "@/lib/utils";
   import * as XLSX from "xlsx";
+  import toast from "react-hot-toast";
+  import { redirect, useRouter } from "next/navigation";
 // import Example from "./borderless_side_by_side";
 
 
@@ -23,6 +25,7 @@ import {
   const TanStackTable = () => {
     const columnHelper = createColumnHelper();
     const [file, setFile] = useState<File | null>(null);
+    const router = useRouter();
     // const [jsonData, setJsonData] = useState("");
     console.log(file);
     function saveData() {
@@ -43,9 +46,10 @@ import {
             const plainObject = JSON.parse(JSON.stringify(json));
             try {
               await createBulkUsers(plainObject);
-              alert("data berhasil disimpan")
-              window.location.reload();
+              toast.success("data berhasil disimpan")
+              // window.location.reload();
               // setLoading(false);
+              return router.replace('/dashboard');
             } catch (error) {
               console.log(error);
             }
@@ -80,9 +84,11 @@ import {
         const confirmed = window.confirm("Apakah Anda yakin ingin menghapus pengguna ini?");
         if (confirmed) {
             await deleteWarga(userId);
-            window.location.reload();
+            toast.success("Pengguna berhasil dihapus");
+            // window.location.reload();
+            return router.replace('/dashboard');
         } else {
-            alert('Penghapusan dibatalkan.');
+            toast.error('Penghapusan dibatalkan.');
         }
     };
     async function clearData() {
@@ -157,7 +163,8 @@ import {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const result = await getWargaByRT();
+          const response = await fetch('/api/wargas');
+          const result = await response.json();
           setData(result);
         } catch (error) {
           console.error("Error fetching warga data:", error);
